@@ -10,15 +10,14 @@ class Element {
 		Element() {};
 		Element(const char *name, UIntRect rect);
 
+		virtual ~Element() {};
+
 		void setName(const char *name);
 		char *getName() { return name; };
 
 	private:
 		char name[ENAME_SIZE];
 		UIntRect rect;
-
-	protected:
-		virtual ~Element() {};
 };
 
 #endif // __ELEMENT_H__

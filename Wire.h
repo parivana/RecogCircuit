@@ -3,12 +3,13 @@
 
 class Wire {
 	public:
-		Wire() : wire_number(wire_count++) {};
+		Wire() { wire_count = 0;
+			wire_number = wire_count++; };
 		~Wire() {};
 
 		int getWireNum() { return wire_number; };
 	private:
-		static int wire_count = 0;
+		static int wire_count;
 		int wire_number;
 };
 

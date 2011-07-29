@@ -1,7 +1,7 @@
 #ifndef __DESCWRITER_H__
 #define __DESCWRITER_H__
 
-#include "desc_type.h"
+#include "Analysis.h"
 
 char *DescWriter(char *, Analysis);
 

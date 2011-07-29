@@ -1,10 +1,13 @@
 #ifndef __RECOGNITION_H__
 #define __RECOGNITION_H__
 
+#include <vector>
 #include <opencv/cv.h>
 
-#include "desc_type.h"
+#include "Element.h"
 
-void DoRecog(IplImage *);
+using namespace std;
+
+vector<Element> DoRecog(IplImage *);
 
 #endif // __RECOGNITION_H__

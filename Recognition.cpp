@@ -1,12 +1,15 @@
-#include <stdlib.h>
+#include <vector>
 #include <opencv/cv.h>
 
 #include "Recognition.h"
-#include "desc_type.h"
-#include "LinkedList.h"
+#include "Element.h"
+#include "Wire.h"
 
-static void FindElement(IplImage *img)
+using namespace std;
+
+static vector<Element> FindElement(IplImage *img)
 {
+	vector<Element> emt;
 	Element e;
 
 	// write your element recognition code here...
@@ -16,34 +19,27 @@ static void FindElement(IplImage *img)
 
 	// here is sample code...
 	//
-	e.type = RESISTOR;
-	e.rect.x = 0;
-	e.rect.y = 0;
-	e.rect.width = 50;
-	e.rect.height = 50;
-	e.param.value = 200;
-	strcpy(e.name, "R1");
-	e.next = NULL;
-	ElementAdd(e);
+
+	emt.push_back(e);
+
+	return emt;
 }
 
-static void Wiring(IplImage *img)
+static vector<Element> Wiring(IplImage *img, vector<Element> emt)
 {
-	Element *c = &listhead;
+	Wire *w;
 	// write your wiring recognition code here...
 	
 	// here is sample code...
 	// 
-	while(c->next != NULL) {
-		c = c->next;
-		c->pnode = 0;	c->nnode = 1;
-	}
+
+	return emt;
 }
 
-void DoRecog(IplImage *img)
+vector<Element> DoRecog(IplImage *img)
 {
-	FindElement(img);
+	vector<Element> emt = FindElement(img);
 
-	Wiring(img);
+	return Wiring(img, emt);
 }
 

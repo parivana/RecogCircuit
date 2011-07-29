@@ -1,11 +1,14 @@
+#include <vector>
 #include <string.h>
 #include <opencv/cv.h>
 #include <opencv/highgui.h>
 
-#include "desc_type.h"
 #include "Recognition.h"
 #include "DescWriter.h"
-#include "LinkedList.h"
+#include "Element.h"
+#include "Analysis.h"
+
+using namespace std;
 
 IplImage *DrawRecogImage(IplImage *);
 
@@ -24,17 +27,11 @@ int main(int argc, char *argv[])
 	cvShowImage("Circuit Image", circuit);
 
 	Analysis anl;
-	DoRecog(circuit);
-
-	anl.type = DC;
-	strcpy(anl.u.dc.srcname, "vin");
-	anl.u.dc.vstart = 0;
-	anl.u.dc.vstop = 5;
-	anl.u.dc.vincr = 0.1;
+	vector<Element> emt = DoRecog(circuit);
 
 	char *desc;
 	char cname[8] = "sample";
-	desc = DescWriter(cname, anl);
+	//desc = DescWriter(cname, anl);
 
 	recogcircuit = DrawRecogImage(circuit);
 	cvNamedWindow("Recognized Circuit Image", CV_WINDOW_AUTOSIZE);
@@ -49,19 +46,9 @@ int main(int argc, char *argv[])
 // draw recognized element region on the original image...
 IplImage *DrawRecogImage(IplImage *img)
 {
-	Element *c = &listhead;
 	IplImage *recog = cvCloneImage(img);
 
 	CvScalar color = cvScalar(0, 0, 255);
-	while(c->next != NULL) {
-		c = c->next;
-		// draw element region
-		cvDrawRect(recog, 
-				cvPoint(c->rect.x, c->rect.y), 
-				cvPoint(c->rect.x + c->rect.width, 
-					c->rect.y + c->rect.height), 
-				color);
-	}
 
 	return recog;
 }
