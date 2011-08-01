@@ -2,50 +2,13 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "desc_type.h"
 #include "DescWriter.h"
-#include "LinkedList.h"
+#include "Element.h"
+#include "Rect.h"
+#include "Analysis.h"
 
 static int ElementWriter(FILE *fp)
 {
-	Element *c = &listhead;
-	// this function should return error code(<0) or 0;
-	while(c->next != NULL) {
-		c = c->next;
-		switch(c->type) {
-			case RESISTOR:
-				fprintf(fp, "%s %d %d %.2lf\n", 
-						c->name, c->pnode, c->nnode,
-						c->param.value);
-				break;
-			case CAPACITOR:
-				fprintf(fp, "%s %d %d %.2lf\n", 
-						c->name, c->pnode, c->nnode,
-						c->param.value);
-				break;
-			case INDUCTOR:
-				fprintf(fp, "%s %d %d %.2lf\n", 
-						c->name, c->pnode, c->nnode,
-						c->param.value);
-				break;
-			case VSRC: // voltage source
-				fprintf(fp, "%s %d %d %.2lf\n", 
-						c->name, c->pnode, c->nnode,
-						c->param.value);
-				break;
-			case ISRC: // current source
-				fprintf(fp, "%s %d %d %.2lf\n", 
-						c->name, c->pnode, c->nnode,
-						c->param.value);
-				break;
-
-			default: // unknown element type
-				return -1;
-				break;
-		}
-	}
-
-
 	return 0;
 }
 
@@ -53,29 +16,12 @@ static int AnalysisWriter(FILE *fp, Analysis anl)
 {
 	// this function should return error code(<0) or 0;
 
-	switch(anl.type) {
-		case DC:
-			fprintf(fp, ".DC %s %.2f %.2f %.2f\n",
-					anl.u.dc.srcname, anl.u.dc.vstart, 
-					anl.u.dc.vstop, anl.u.dc.vincr);
-			break;
-		case AC:
-			fprintf(fp, ".AC ");
-			if(anl.u.ac.type == 0) fprintf(fp, "DEC ");
-			else if(anl.u.ac.type == 1) fprintf(fp, "OCT ");
-			else if(anl.u.ac.type == 2) fprintf(fp, "LIN ");
-			fprintf(fp, "%d %d %d\n", 
-					anl.u.ac.np, anl.u.ac.fstart, anl.u.ac.fstop);
-			break;
-		case TRAN:
-			fprintf(fp, ".TRAN %d %d\n", 
-					anl.u.tran.tstep, anl.u.tran.tstop);
-			break;
-		default: // unknown analysis type
-			return -1;
+	switch(anl.getType()) {
+		default:
 			break;
 	}
-
+	
+	fprintf(fp, "%s\n", anl.getParam());
 	return 0;
 }
 

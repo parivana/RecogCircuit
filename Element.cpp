@@ -13,12 +13,9 @@ Element::~Element()
 {
 	if(this->param)
 		delete this->param;
-<<<<<<< HEAD
 
 	if(this->wire)
 		delete this->wire;
-=======
->>>>>>> 4637b1cd3273ae2537e2231d65eb083c41dc937c
 }
 
 void Element::setName(const char *name) 
@@ -28,7 +25,7 @@ void Element::setName(const char *name)
 
 void Element::setParam(const char *param)
 {
-	int length = strlent(param);
+	int length = strlen(param);
 	if(this->param)
 		delete this->param;
 
@@ -47,7 +44,6 @@ void Element::setRect(
 	this->rect.right = right;
 	this->rect.bottom = bottom;
 }
-<<<<<<< HEAD
 
 void Element::setNport(int nport)
 {
@@ -59,7 +55,7 @@ int Element::makeWire()
 	if(this->nport <= 0)
 		return -1;
 
-	this->wire = new (Wire *)[this->nport];
+	this->wire = new Wire *[this->nport];
 	return 0;
 }
 
@@ -82,5 +78,3 @@ Wire *Element::getWire(int port)
 
 	return this->wire[port];
 }
-=======
->>>>>>> 4637b1cd3273ae2537e2231d65eb083c41dc937c
