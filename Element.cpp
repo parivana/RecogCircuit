@@ -13,9 +13,12 @@ Element::~Element()
 {
 	if(this->param)
 		delete this->param;
+<<<<<<< HEAD
 
 	if(this->wire)
 		delete this->wire;
+=======
+>>>>>>> 4637b1cd3273ae2537e2231d65eb083c41dc937c
 }
 
 void Element::setName(const char *name) 
@@ -44,6 +47,7 @@ void Element::setRect(
 	this->rect.right = right;
 	this->rect.bottom = bottom;
 }
+<<<<<<< HEAD
 
 void Element::setNport(int nport)
 {
@@ -78,3 +82,5 @@ Wire *Element::getWire(int port)
 
 	return this->wire[port];
 }
+=======
+>>>>>>> 4637b1cd3273ae2537e2231d65eb083c41dc937c

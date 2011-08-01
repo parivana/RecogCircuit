@@ -24,6 +24,7 @@ class Element {
 		//void setRect(UIntRect r) { this->rect = r; };
 		UIntRect getRect() { return rect; };
 
+<<<<<<< HEAD
 		void setNport(int nport);
 		int getNport() { return nport; };
 
@@ -31,11 +32,16 @@ class Element {
 		int setWire(Wire *w, int port);
 		Wire *getWire(int port);  
 
+=======
+>>>>>>> 4637b1cd3273ae2537e2231d65eb083c41dc937c
 	private:
 		char name[ENAME_SIZE];
 		char *param;
 		int type;
+<<<<<<< HEAD
 		int nport;
+=======
+>>>>>>> 4637b1cd3273ae2537e2231d65eb083c41dc937c
 		UIntRect rect;
 		Wire **wire;
 };
