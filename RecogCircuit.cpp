@@ -27,7 +27,8 @@ int main(int argc, char *argv[])
 	cvShowImage("Circuit Image", circuit);
 
 	Analysis anl;
-
+	anl.setType(0); //
+	anl.setParam("0 5 1");
 	vector<Element> emt = DoRecog(circuit);
 
 	char *desc;
