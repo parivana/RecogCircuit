@@ -12,5 +12,8 @@ all : $(TARGET)
 $(TARGET) : $(OBJS)
 	$(CXX) -o $@ $^ $(LDFLAGS)
 
+tag :
+	ctags -R *
+
 clean : 
 	rm -f $(OBJS) $(TARGET)

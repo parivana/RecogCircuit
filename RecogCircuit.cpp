@@ -27,11 +27,12 @@ int main(int argc, char *argv[])
 	cvShowImage("Circuit Image", circuit);
 
 	Analysis anl;
+
 	vector<Element> emt = DoRecog(circuit);
 
 	char *desc;
 	char cname[8] = "sample";
-	//desc = DescWriter(cname, anl);
+	desc = DescWriter(cname, emt, anl);
 
 	recogcircuit = DrawRecogImage(circuit);
 	cvNamedWindow("Recognized Circuit Image", CV_WINDOW_AUTOSIZE);

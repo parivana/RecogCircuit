@@ -1,3 +1,4 @@
+#include <vector>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -7,25 +8,42 @@
 #include "Rect.h"
 #include "Analysis.h"
 
-static int ElementWriter(FILE *fp)
+using namespace std;
+
+static int ElementWriter(FILE *fp, vector<Element> emt)
 {
+	vector<Element>::iterator iter;
+
+	for(iter = emt.begin() ; iter != emt.end() ; iter++) {
+		fprintf(fp, "%s ", (*iter).getName());
+		for(int i = 0 ; i < (*iter).getNport() ; i++) {
+			Wire *w = (*iter).getWire(i);
+			fprintf(fp, "%d ", w->getWireNum()); 
+		}
+		fprintf(fp, "%s\n", (*iter).getParam());
+	}
+
 	return 0;
 }
 
 static int AnalysisWriter(FILE *fp, Analysis anl)
 {
 	// this function should return error code(<0) or 0;
+	int type = anl.getType();
 
-	switch(anl.getType()) {
-		default:
+	switch(type) {
+		//case DC:
+			fprintf(fp, ".DC ");
 			break;
+		default:
+			return -1;
+		fprintf(fp, ".%s ", anl.getParam());
 	}
-	
 	fprintf(fp, "%s\n", anl.getParam());
 	return 0;
 }
 
-char *DescWriter(char *file, Analysis anl) 
+char *DescWriter(char *file, vector<Element> emt, Analysis anl) 
 {
 	FILE *fp;
 	char *fname;
@@ -43,7 +61,7 @@ char *DescWriter(char *file, Analysis anl)
 
 	fprintf(fp, "%s\n", fname);
 
-	ret = ElementWriter(fp);
+	ret = ElementWriter(fp, emt);
 	if(ret < 0) {
 		fprintf(stderr, "Element writing failed. error code: %d\n", ret);
 		fclose(fp);
