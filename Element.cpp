@@ -3,6 +3,12 @@
 #include "Element.h"
 #include "Rect.h"
 
+Element::Element()
+{
+	this->param = NULL;
+	this->wire = NULL;
+}
+
 Element::Element(const char *name, UIntRect rect)
 {
 	strncpy(this->name, name, ENAME_SIZE);

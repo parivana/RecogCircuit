@@ -20,8 +20,6 @@ static vector<Element> FindElement(IplImage *img)
 	// here is sample code...
 	//
 
-	emt.push_back(e);
-
 	return emt;
 }
 

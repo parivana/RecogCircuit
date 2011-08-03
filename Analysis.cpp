@@ -2,6 +2,12 @@
 
 #include "Analysis.h"
 
+Analysis::Analysis()
+{
+	this->type = -1;
+	this->param = NULL;
+}
+
 Analysis::Analysis(Analysis &a)
 {
 	char *str = a.getParam();
@@ -10,7 +16,7 @@ Analysis::Analysis(Analysis &a)
 	this->type = a.getType();
 	this->param = new char[length];
 
-	strncpy(this->param, str, length);
+	strcpy(this->param, str);
 }
 
 Analysis::~Analysis()
@@ -28,5 +34,5 @@ void Analysis::setParam(const char *param)
 
 	this->param = new char[length];
 
-	strncpy(this->param, param, length);
+	strcpy(this->param, param);
 }

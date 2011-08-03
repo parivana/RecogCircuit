@@ -32,7 +32,7 @@ static int AnalysisWriter(FILE *fp, Analysis anl)
 	int type = anl.getType();
 
 	switch(type) {
-		//case DC:
+		case Analysis::DC:
 			fprintf(fp, ".DC ");
 			break;
 		default:

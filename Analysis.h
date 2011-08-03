@@ -3,7 +3,7 @@
 
 class Analysis {
 	public:
-		Analysis() {};
+		Analysis();
 		Analysis(Analysis &a);
 		~Analysis();
 
@@ -11,8 +11,13 @@ class Analysis {
 		int getType() { return this->type; };
 
 		void setParam(const char *param);
-		char *getParam() { return param; };
+		char *getParam() { return this->param; };
 
+		enum Type {
+			DC,
+			AC,
+			TRANS
+		};
 	private:
 		int type;
 		char *param;

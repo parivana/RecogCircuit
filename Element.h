@@ -8,7 +8,7 @@
 
 class Element {
 	public:
-		Element() {};
+		Element();
 		Element(const char *name, UIntRect rect);
 
 		virtual ~Element();
