@@ -13,13 +13,22 @@ static vector<Element> FindElement(IplImage *img)
 	Element e;
 
 	// write your element recognition code here...
-	// if you want to add new Element to linked list,
-	// you have to call ElementAdd function with passing an Element.
 	//
 
 	// here is sample code...
 	//
+	e.setName("R1");
+	e.setRect(0, 0, 50, 50);
 
+	e.setNport(2);
+	e.makeWire();
+	Wire *wp = new Wire();
+	Wire *wn = new Wire();
+	e.setWire(wp, 0);
+	e.setWire(wn, 1);
+	e.setParam("200");
+
+	emt.push_back(e);
 	return emt;
 }
 

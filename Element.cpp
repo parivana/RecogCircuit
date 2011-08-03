@@ -9,6 +9,25 @@ Element::Element()
 	this->wire = NULL;
 }
 
+Element::Element(const Element &e)
+{
+	strncpy(this->name, e.name, ENAME_SIZE);
+	this->rect = e.rect;
+	this->type = e.type;
+	
+	char *param = e.param;
+	int length = strlen(param);
+
+	this->param = new char[length];
+	strcpy(this->param, param);
+
+	this->nport = e.nport;
+	this->wire = new Wire *[this->nport];
+	for(int i = 0 ; i < this->nport ; i++) {
+		this->wire[i] = e.wire[i];
+	}
+}
+
 Element::Element(const char *name, UIntRect rect)
 {
 	strncpy(this->name, name, ENAME_SIZE);

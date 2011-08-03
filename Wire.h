@@ -3,8 +3,7 @@
 
 class Wire {
 	public:
-		Wire() { wire_count = 0;
-			wire_number = wire_count++; };
+		Wire() { wire_number = wire_count++; };
 		~Wire() {};
 
 		int getWireNum() { return wire_number; };

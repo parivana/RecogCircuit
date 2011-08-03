@@ -10,7 +10,7 @@
 
 using namespace std;
 
-IplImage *DrawRecogImage(IplImage *);
+IplImage *DrawRecogImage(IplImage *, vector<Element>);
 
 int main(int argc, char *argv[])
 {
@@ -35,7 +35,7 @@ int main(int argc, char *argv[])
 	char cname[8] = "sample";
 	desc = DescWriter(cname, emt, anl);
 
-	recogcircuit = DrawRecogImage(circuit);
+	recogcircuit = DrawRecogImage(circuit, emt);
 	cvNamedWindow("Recognized Circuit Image", CV_WINDOW_AUTOSIZE);
 	cvShowImage("Recognized Circuit Image", recogcircuit);
 
@@ -46,11 +46,15 @@ int main(int argc, char *argv[])
 }
 
 // draw recognized element region on the original image...
-IplImage *DrawRecogImage(IplImage *img)
+IplImage *DrawRecogImage(IplImage *img, vector<Element> emt)
 {
 	IplImage *recog = cvCloneImage(img);
-
 	CvScalar color = cvScalar(0, 0, 255);
+	
+	vector<Element>::iterator iter;
+	for(iter = emt.begin() ; iter != emt.end() ; iter++) {
+
+	}
 
 	return recog;
 }

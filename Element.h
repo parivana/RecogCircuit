@@ -9,6 +9,7 @@
 class Element {
 	public:
 		Element();
+		Element(const Element &e);
 		Element(const char *name, UIntRect rect);
 
 		virtual ~Element();
@@ -16,8 +17,11 @@ class Element {
 		void setName(const char *name);
 		char *getName() { return name; };
 
-		void setParam(const char *name);
+		void setParam(const char *param);
 		char *getParam() { return param; };
+
+		void setType(int type) { this->type = type; };
+		int getType() { return this->type; };
 
 		void setRect(unsigned int left, unsigned int top,
 				unsigned int right, unsigned int bottom);
