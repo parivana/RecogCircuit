@@ -11,6 +11,7 @@
 using namespace std;
 
 IplImage *DrawRecogImage(IplImage *, vector<Element>);
+IplImage *PreProcess(IplImage *);
 
 int main(int argc, char *argv[])
 {
@@ -21,26 +22,31 @@ int main(int argc, char *argv[])
 
 	IplImage* circuit = cvLoadImage(argv[1], -1);
 	IplImage* recogcircuit;
+	IplImage* precircuit;
 
 	cvNamedWindow("Circuit Image", CV_WINDOW_AUTOSIZE);
-
 	cvShowImage("Circuit Image", circuit);
+
+	precircuit = PreProcess(circuit);
+	cvNamedWindow("Preprocessed Image", CV_WINDOW_AUTOSIZE);
+	cvShowImage("Preprocessed Image", precircuit);
 
 	Analysis anl;
 	anl.setType(Analysis::DC); //
 	anl.setParam("0 5 1");
-	vector<Element> emt = DoRecog(circuit);
+	vector<Element> emt = DoRecog(precircuit);
 
 	char *desc;
 	char cname[8] = "sample";
 	desc = DescWriter(cname, emt, anl);
 
-	recogcircuit = DrawRecogImage(circuit, emt);
+	recogcircuit = DrawRecogImage(precircuit, emt);
 	cvNamedWindow("Recognized Circuit Image", CV_WINDOW_AUTOSIZE);
 	cvShowImage("Recognized Circuit Image", recogcircuit);
 
 	cvWaitKey(0);
 	cvReleaseImage(&circuit);
+	cvReleaseImage(&precircuit);
 	cvReleaseImage(&recogcircuit);
 	return 0;
 }
@@ -57,4 +63,12 @@ IplImage *DrawRecogImage(IplImage *img, vector<Element> emt)
 	}
 
 	return recog;
+}
+
+IplImage *PreProcess(IplImage *img)
+{
+	IplImage *pre = cvCloneImage(img);
+	
+	cvThreshold(pre, pre, 128, 255, CV_THRESH_BINARY);
+	return pre;
 }
