@@ -10,6 +10,7 @@
 #include "Analysis.h"
 
 using namespace std;
+using namespace cv;
 
 IplImage *DrawRecogImage(IplImage *, vector<Element>);
 IplImage *PreProcess(IplImage *);
@@ -77,39 +78,36 @@ IplImage *PreProcess(IplImage *img)
 	//cvCvtColor(img, pre, CV_BGR2GRAY);
 	//cvThreshold(pre, pre, 128, 255, CV_THRESH_BINARY);
 
-	cvNot(img_gray, img_gray);
-	//cvCanny(img_gray, img_gray, 50, 200, 3);
+	//cvNot(img_gray, img_gray);
+	cvCanny(img_gray, img_gray, 100, 20, 3);
 	cvCvtColor(img_gray, pre, CV_GRAY2BGR);
+
 	CvSeq *lines = 0;
 	CvMemStorage *storage = cvCreateMemStorage(0);
-
+	/*
 	//
 	lines = cvHoughLines2(img_gray, storage, CV_HOUGH_PROBABILISTIC,
-			3, CV_PI / 180, 100, 50, 3);
+			1, CV_PI / 180, 100, 20, 0);
 	for(int i = 0 ; i < lines->total ; i++) {
 		CvPoint *line = (CvPoint *)cvGetSeqElem(lines,i);
-		cvLine(pre, line[0], line[1], CV_RGB(0, 255, 0), 1, 1);
-	}
-	/*
-	lines = cvHoughLines2(img_gray, storage, CV_HOUGH_STANDARD, 3,
-			CV_PI / 36, 100, 0, 0);
-
-	printf("%d\n", lines->total);
-	for(int i = 0 ; i < lines->total ; i++) {
-		double *line = (double *)cvGetSeqElem(lines, i);
-		double rho = line[0];
-		double theta = line[1];
-
-		CvPoint pt1, pt2;
-		double a = cos(theta), b = sin(theta);
-		double x0 = a/rho, y0 = b/rho;
-		pt1.x = cvRound(x0 + 1000 * (-b));
-		pt1.y = cvRound(y0 + 1000 * (a));
-		pt2.x = cvRound(x0 - 1000 * (-b));
-		pt2.y = cvRound(y0 - 1000 * (a));
-		cvLine(pre, pt1, pt2, CV_RGB(0, 0, 255), 3, 8);
+		cvLine(pre, line[0], line[1], CV_RGB(0, 255, 0), 1, 8);
 	}
 	*/
+	
+	lines = cvHoughLines2(img_gray, storage, CV_HOUGH_STANDARD,
+			1, CV_PI / 60, 50, 20, 0);
+
+	for(int i = 0 ; i < lines->total ; i++) {
+		float *line = (float *)cvGetSeqElem(lines, i);
+		float rho = line[0];
+		float theta = line[1];
+		double a = cos(theta), b = sin(theta);
+		double x0 = a * rho, y0 = b*rho;
+		Point pt1(cvRound(x0 + 1000*(-b)), cvRound(y0 + 1000*(a)));
+		Point pt2(cvRound(x0 - 1000*(-b)), cvRound(y0 - 1000*(a)));
+		cvLine(pre, pt1, pt2, CV_RGB(0, 255, 0), 1, 8);
+	}
+	
 	/*
 	double minVal, maxVal;
 	cvCornerHarris(img_gray, pre, 3);
