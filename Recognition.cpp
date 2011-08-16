@@ -4,8 +4,11 @@
 #include "Recognition.h"
 #include "Element.h"
 #include "Wire.h"
+#include "Vertex.h"
+#include "Edge.h"
 
 using namespace std;
+using namespace cv;
 
 static vector<Element> FindElement(IplImage *img)
 {
@@ -48,5 +51,23 @@ vector<Element> DoRecog(IplImage *img)
 	vector<Element> emt = FindElement(img);
 
 	return Wiring(img, emt);
+}
+
+void FindVE(InputArray src, vector<Vertex> &v, vector<Edge> &e)
+{
+	vector<Vec2f> lines;
+
+	v.clear();
+	e.clear();
+	HoughLines(src, lines, 1, CV_PI/180, 50);
+
+
+}
+
+vector<Element> FindElementRegion(vector<Vertex> v, vector<Edge> e)
+{
+	vector<Element> emt;
+
+	return emt;
 }
 

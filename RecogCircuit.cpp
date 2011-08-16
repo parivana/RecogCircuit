@@ -108,58 +108,7 @@ IplImage *PreProcess(IplImage *img)
 		cvLine(pre, pt1, pt2, CV_RGB(0, 255, 0), 1, 8);
 	}
 	
-	/*
-	double minVal, maxVal;
-	cvCornerHarris(img_gray, pre, 3);
-	cvMinMaxLoc(pre, &minVal, &maxVal, NULL, NULL, 0);
-	double scale = 255 / (maxVal - minVal);
-	cvConvertScale(pre, pre, scale, -minVal * scale);
 	cvReleaseImage(&img_gray);
-	*/
-	/*
-	IplImage *dst1 = cvCloneImage(img);
-	IplImage *dst2 = cvCloneImage(img);
-	IplImage *eig_img = cvCreateImage(cvGetSize(img_gray), 
-			IPL_DEPTH_32F, 1);
-	IplImage *temp_img = cvCreateImage(cvGetSize(img_gray), 
-			IPL_DEPTH_32F, 1);
-	CvPoint2D32f *corners = (CvPoint2D32f *)cvAlloc(
-			corner_count * sizeof(CvPoint2D32f));
-
-	cvGoodFeaturesToTrack(img_gray, eig_img, temp_img, corners,
-			&corner_count, 0.1, 15);
-	cvFindCornerSubPix(img_gray, corners, corner_count,
-			cvSize(3, 3), cvSize(-1, -1),
-			cvTermCriteria(CV_TERMCRIT_ITER|CV_TERMCRIT_EPS, 20, 0.03));
-
-	for(int i = 0 ; i < corner_count ; i++) {
-		cvCircle(dst1, cvPointFrom32f(corners[i]), 3,
-				CV_RGB(255, 0, 0), 2);
-	}
-
-	corner_count = 150;
-	cvGoodFeaturesToTrack(img_gray, eig_img, temp_img, corners,
-			&corner_count, 0.1, 15, NULL, 3, 1, 0.01);
-	cvFindCornerSubPix(img_gray, corners, corner_count,
-			cvSize(3, 3), cvSize(-1, -1),
-			cvTermCriteria(CV_TERMCRIT_ITER | CV_TERMCRIT_EPS, 20, 0.03));
-
-	for(int i = 0 ; i < corner_count ; i++) {
-		cvCircle(dst2, cvPointFrom32f(corners[i]), 3, CV_RGB(0, 0, 255),
-				2);
-	}
-
-	cvNamedWindow("EigenVal", CV_WINDOW_AUTOSIZE);
-	cvShowImage("EigenVal", dst1);
-	cvNamedWindow("Harris", CV_WINDOW_AUTOSIZE);
-	cvShowImage("Harris", dst2);
-	cvWaitKey(0);
-
-	cvReleaseImage(&eig_img);
-	cvReleaseImage(&temp_img);
-	cvReleaseImage(&dst1);
-	cvReleaseImage(&img_gray);
-	*/
 	return pre;
 }
 
