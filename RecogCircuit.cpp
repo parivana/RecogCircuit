@@ -84,16 +84,17 @@ IplImage *PreProcess(IplImage *img)
 
 	CvSeq *lines = 0;
 	CvMemStorage *storage = cvCreateMemStorage(0);
-	/*
 	//
 	lines = cvHoughLines2(img_gray, storage, CV_HOUGH_PROBABILISTIC,
-			1, CV_PI / 180, 100, 20, 0);
+			1, CV_PI / 180, 50, 50, 200);
 	for(int i = 0 ; i < lines->total ; i++) {
 		CvPoint *line = (CvPoint *)cvGetSeqElem(lines,i);
+		CvScalar color = cvScalar(192, 192, 192, 192);
 		cvLine(pre, line[0], line[1], CV_RGB(0, 255, 0), 1, 8);
+		cvCircle(pre, line[0], 10, color, -1, 8);
+		cvCircle(pre, line[1], 10, color, -1, 8);
 	}
-	*/
-	
+	/*
 	lines = cvHoughLines2(img_gray, storage, CV_HOUGH_STANDARD,
 			1, CV_PI / 60, 50, 20, 0);
 
@@ -105,10 +106,11 @@ IplImage *PreProcess(IplImage *img)
 		double x0 = a * rho, y0 = b*rho;
 		Point pt1(cvRound(x0 + 1000*(-b)), cvRound(y0 + 1000*(a)));
 		Point pt2(cvRound(x0 - 1000*(-b)), cvRound(y0 - 1000*(a)));
-		cvLine(pre, pt1, pt2, CV_RGB(0, 255, 0), 1, 8);
-	}
+		cvLine(pre, pt1, pt2, CV_RGB(0, 255, 0), 5, 8);
+	}*/
 	
 	cvReleaseImage(&img_gray);
 	return pre;
 }
+
 
