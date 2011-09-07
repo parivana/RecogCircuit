@@ -12,6 +12,7 @@
 using namespace std;
 using namespace cv;
 
+IplImage *DrawVE(IplImage *, vector<Vertex>, vector<Edge);
 IplImage *DrawRecogImage(IplImage *, vector<Element>);
 IplImage *PreProcess(IplImage *);
 
@@ -112,3 +113,16 @@ IplImage *PreProcess(IplImage *img)
 	return pre;
 }
 
+IplImage *DrawVE(IplImage *img, vector<Vertex> v, vector<Edge> e)
+{
+	IplImage *ret = cvCloneImage(img);
+	vector<Vertex>::const_iterator viter;
+	vector<Edge>::const_iterator eiter;
+
+	for(viter = v.begin() ; viter != v.end() ; viter++) {
+	}
+	for(eiter = e.begin() ; eiter != e.end() ; eiter++) {
+	}
+
+	return ret;
+}

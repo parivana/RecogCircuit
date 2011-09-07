@@ -16,7 +16,6 @@ static int ElementWriter(FILE *fp, vector<Element> emt)
 
 	for(iter = emt.begin() ; iter != emt.end() ; iter++) {
 		fprintf(fp, "%s ", (*iter).getName());
-		fprintf(stdout, "%s ", (*iter).getName());
 		for(int i = 0 ; i < (*iter).getNport() ; i++) {
 			Wire *w = (*iter).getWire(i);
 			fprintf(fp, "%d ", w->getWireNum()); 
