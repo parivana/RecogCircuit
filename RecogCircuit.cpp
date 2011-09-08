@@ -12,7 +12,7 @@
 using namespace std;
 using namespace cv;
 
-IplImage *DrawVE(IplImage *, vector<Vertex>, vector<Edge);
+//IplImage *DrawVE(IplImage *, vector<Vertex>, vector<Edge>);
 IplImage *DrawRecogImage(IplImage *, vector<Element>);
 IplImage *PreProcess(IplImage *);
 
@@ -96,12 +96,25 @@ IplImage *PreProcess(IplImage *img)
 	*/
 	
 	lines = cvHoughLines2(img_gray, storage, CV_HOUGH_STANDARD,
-			1, CV_PI / 60, 50, 20, 0);
+			1, CV_PI / 180, 50, 0, 0);
+
+	float (*line)[] = new float *[lines->total];
 
 	for(int i = 0 ; i < lines->total ; i++) {
-		float *line = (float *)cvGetSeqElem(lines, i);
-		float rho = line[0];
-		float theta = line[1];
+		line[i] = (float *)cvGetSeqElem(lines, i);
+		float r1 = line[i][0];
+		float th1 = line[i][1];
+
+		for(int j = i + 1 ; j < lines->total ; j++) {
+			float r2 = line[j][0];
+			float th2 = line[j][0];
+
+			if(abs(th1 - th2) < PI / 6.0)
+				continue;
+
+			// get (x, y)
+		}
+
 		double a = cos(theta), b = sin(theta);
 		double x0 = a * rho, y0 = b*rho;
 		Point pt1(cvRound(x0 + 1000*(-b)), cvRound(y0 + 1000*(a)));
@@ -112,17 +125,18 @@ IplImage *PreProcess(IplImage *img)
 	cvReleaseImage(&img_gray);
 	return pre;
 }
-
+/*
 IplImage *DrawVE(IplImage *img, vector<Vertex> v, vector<Edge> e)
 {
 	IplImage *ret = cvCloneImage(img);
 	vector<Vertex>::const_iterator viter;
 	vector<Edge>::const_iterator eiter;
-
+	
 	for(viter = v.begin() ; viter != v.end() ; viter++) {
 	}
 	for(eiter = e.begin() ; eiter != e.end() ; eiter++) {
 	}
-
+	
 	return ret;
 }
+*/
