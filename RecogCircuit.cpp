@@ -9,11 +9,12 @@
 #include "Element.h"
 #include "Analysis.h"
 #include "Vertex.h"
+#include "Edge.h"
 
 using namespace std;
 using namespace cv;
 
-//IplImage *DrawVE(IplImage *, vector<Vertex>, vector<Edge>);
+IplImage *DrawVE(IplImage *, vector<Vertex>, vector<Edge>);
 IplImage *DrawRecogImage(IplImage *, vector<Element>);
 IplImage *PreProcess(IplImage *);
 
@@ -105,6 +106,7 @@ IplImage *PreProcess(IplImage *img)
 		line[i] = (float *)cvGetSeqElem(lines, i);
 	}
 
+	vector<Vertex> v;
 	vector<Point> vec_point;
 
 	for(int i = 0 ; i < lines->total ; i++) {
@@ -143,11 +145,10 @@ IplImage *PreProcess(IplImage *img)
 					min(abs(CV_PI / 4.0 - dth), abs(CV_PI / 2.0 - dth)));
 	
 			Point pt(cvRound(x), cvRound(y));
-			if(!CheckValid(img_gray, pt, th1, th2))
+			if(!CheckValid(img_gray, v, pt, th1, th2))
 				continue;
 
 			vec_point.push_back(pt);
-			//cvCircle(img_temp, pt, (errth > 0.1) ? 30 : 10, CV_RGB(255, 0, 0));
 			cvCircle(pre, pt, (errth > 0.1) ? 30 : 10, CV_RGB(255, 0, 0));
 
 		}
@@ -159,14 +160,13 @@ IplImage *PreProcess(IplImage *img)
 		//cvLine(pre, pt1, pt2, CV_RGB(0, 255, 0), 1, 8);
 	}
 
-	vector<Vertex> v;
 	CalcVertexPos(vec_point, v);
 
 	delete line;
 	cvReleaseImage(&img_gray);
 	return pre;
 }
-/*
+
 IplImage *DrawVE(IplImage *img, vector<Vertex> v, vector<Edge> e)
 {
 	IplImage *ret = cvCloneImage(img);
@@ -180,4 +180,3 @@ IplImage *DrawVE(IplImage *img, vector<Vertex> v, vector<Edge> e)
 	
 	return ret;
 }
-*/
