@@ -65,15 +65,15 @@ vector<Element> DoRecog(IplImage *img)
 	return Wiring(img, emt);
 }
 
-void FindVE(InputArray src, vector<Vertex> &v, vector<Edge> &e)
+void FindVE(IplImage *src, vector<Vertex> &v, vector<Edge> &e)
 {
 	CvSeq *lines = 0;
 	CvMemStorage *storage = cvCreateMemStorage(0);
 
-	lines = cvHoughLines2(img_gray, storage, CV_HOUGH_STANDARD,
+	lines = cvHoughLines2(src, storage, CV_HOUGH_STANDARD,
 			1, CV_PI / 180, 50, 0, 0);
 
-	float (*line)[] = new float *[lines->total];
+	float **line = new float *[lines->total];
 
 	for(int i = 0 ; i < lines->total ; i++) {
 		line[i] = (float *)cvGetSeqElem(lines, i);
@@ -84,8 +84,8 @@ void FindVE(InputArray src, vector<Vertex> &v, vector<Edge> &e)
 			float r2 = line[j][0];
 			float th2 = line[j][0];
 
-			dth = abs(th1 - th2);
-			if(dth < PI / 6.0)
+			float dth = abs(th1 - th2);
+			if(dth < CV_PI / 6.0)
 				continue;
 
 			// get (x, y)
@@ -101,3 +101,16 @@ vector<Element> FindElementRegion(vector<Vertex> v, vector<Edge> e)
 	return emt;
 }
 
+bool CheckValid(const CvArr *src, Point pt, float th1, float th2)
+{
+	CvSize size = cvGetSize(src);
+	if(!(pt.x >= 0 && pt.y >= 0) || !(pt.x < size.width && pt.y < size.height))
+		return false;
+
+
+	return true;
+}
+
+void CalcVertexPos(vector<Point> &p, vector<Vertex> &v)
+{
+}

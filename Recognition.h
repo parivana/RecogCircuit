@@ -5,9 +5,13 @@
 #include <opencv/cv.h>
 
 #include "Element.h"
+#include "Vertex.h"
 
 using namespace std;
+using namespace cv;
 
 vector<Element> DoRecog(IplImage *);
+void CalcVertexPos(vector<Point> &p, vector<Vertex> &v);
+bool CheckValid(const CvArr *src, Point pt, float th1, float th2);
 
 #endif // __RECOGNITION_H__
