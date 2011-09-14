@@ -132,13 +132,66 @@ vector<Element> FindElementRegion(vector<Vertex> v, vector<Edge> e)
 
 bool CheckValid(const CvArr *src, vector<Vertex> &v, Point pt, float th1, float th2)
 {
+	Vertex *vertex = NULL;
 	CvSize size = cvGetSize(src);
-	v.clear();
+	IplImage *img_src = (IplImage *)src;
+	char *data;
+ 	int step;
+	char direction[8] = {0, };
+
+	data = img_src->imageData;
+	step = img_src->widthStep;
 
 	if(!(pt.x >= 0 && pt.y >= 0) || !(pt.x < size.width && pt.y < size.height))
 		return false;
 
+	// 
+	float tan1 = CV_PI / 2.0 - th1;
+	float tan2 = CV_PI / 2.0 - th2;
 
+	if(tan1 < 0) tan1 = CV_PI - tan1;
+	if(tan2 < 0) tan2 = CV_PI - tan1;
+
+	float angle;
+	float radius = 30.0;
+	bool flag = false;
+	for(int i = 0 ; i < 8 ; i++) {
+		flag = false;
+		angle = i * CV_PI / 4.0;
+		for(float dangle = 0.0 ; dangle < CV_PI / 8 ; dangle += 0.01) {
+			int x = round(pt.x + radius * cos(angle+dangle));
+			int y = round(pt.y - radius * sin(angle+dangle));
+			
+			if(data[x + y * step] != 0) {
+				flag = true;
+				break;
+			}
+			x = round(pt.x + radius * cos(angle-dangle));
+			y = round(pt.y - radius * sin(angle-dangle));
+			if(data[x + y * step] != 0) {
+				flag = true;
+				break;
+			}
+		}
+
+		if(flag) {
+			if(vertex == NULL) {
+				vertex = new Vertex();
+			}
+			vertex->pt = pt;
+			vertex->direction[i] = 1;
+		}
+	}
+	
+	if(vertex == NULL)
+		return false;
+
+	for(int i = 0 ; i < 8 ; i++) {
+		if(vertex->direction[i] == 1) {
+		}
+	}
+
+	v.push_back(*vertex);
 	return true;
 }
 

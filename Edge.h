@@ -5,8 +5,8 @@
 
 class Edge {
 	public : 
-		Edge();
-		Edge(Edge &e);
+		Edge() {};
+		Edge(const Edge &e) {};
 
 	private:
 		Vertex *v;

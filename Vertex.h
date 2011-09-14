@@ -5,10 +5,21 @@ using namespace cv;
 
 class Vertex {
 	public : 
-		Vertex();
-		Vertex(Vertex &v);
+		Vertex() {
+			for(int i = 0 ; i < 8 ; i++) {
+				this->direction[i] = 0;
+			}
+		};
+		Vertex(const Vertex &v) {
+			this->pt = v.pt;
+			
+			for(int i = 0 ; i < 8 ; i++) {
+				this->direction[i] = v.direction[i];
+			}
+		};
+		~Vertex() {};
 
-	private:
+		char direction[8];
 		Point pt;
 };
 

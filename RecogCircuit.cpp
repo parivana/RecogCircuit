@@ -147,10 +147,6 @@ IplImage *PreProcess(IplImage *img)
 			Point pt(cvRound(x), cvRound(y));
 			if(!CheckValid(img_gray, v, pt, th1, th2))
 				continue;
-
-			vec_point.push_back(pt);
-			cvCircle(pre, pt, (errth > 0.1) ? 30 : 10, CV_RGB(255, 0, 0));
-
 		}
 
 		double a = cos(th1), b = sin(th1);
@@ -160,8 +156,20 @@ IplImage *PreProcess(IplImage *img)
 		//cvLine(pre, pt1, pt2, CV_RGB(0, 255, 0), 1, 8);
 	}
 
+	vector<Vertex>::const_iterator iter;
+	for(iter = v.begin() ; iter != v.end() ; iter++) {
+		cvCircle(pre, iter->pt, 30, CV_RGB(255, 0, 0));
+		for(int i = 0 ; i < 8 ; i++) {
+			if(iter->direction[i] == 1) {
+				float angle = i * CV_PI / 4.0;
+				Point r(round(30*cos(angle)), 
+						round(30*sin(angle)));
+				cvLine(pre, iter->pt, iter->pt + r, CV_RGB(0, 255, 0),
+						1, 8);
+			}
+		}
+	}
 	CalcVertexPos(vec_point, v);
-
 	delete line;
 	cvReleaseImage(&img_gray);
 	return pre;
@@ -174,7 +182,9 @@ IplImage *DrawVE(IplImage *img, vector<Vertex> v, vector<Edge> e)
 	vector<Edge>::const_iterator eiter;
 	
 	for(viter = v.begin() ; viter != v.end() ; viter++) {
+
 	}
+
 	for(eiter = e.begin() ; eiter != e.end() ; eiter++) {
 	}
 	
