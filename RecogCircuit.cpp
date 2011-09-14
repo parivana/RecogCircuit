@@ -153,18 +153,18 @@ IplImage *PreProcess(IplImage *img)
 		double x0 = a * r1, y0 = b*r1;
 		Point pt1(cvRound(x0 + 1000*(-b)), cvRound(y0 + 1000*(a)));
 		Point pt2(cvRound(x0 - 1000*(-b)), cvRound(y0 - 1000*(a)));
-		//cvLine(pre, pt1, pt2, CV_RGB(0, 255, 0), 1, 8);
+		cvLine(pre, pt1, pt2, CV_RGB(0, 255, 0), 1, 8);
 	}
 
 	vector<Vertex>::const_iterator iter;
 	for(iter = v.begin() ; iter != v.end() ; iter++) {
-		cvCircle(pre, iter->pt, 30, CV_RGB(255, 0, 0));
+		cvCircle(pre, iter->pt, 10, CV_RGB(255, 0, 0));
 		for(int i = 0 ; i < 8 ; i++) {
 			if(iter->direction[i] == 1) {
 				float angle = i * CV_PI / 4.0;
 				Point r(round(30*cos(angle)), 
-						round(30*sin(angle)));
-				cvLine(pre, iter->pt, iter->pt + r, CV_RGB(0, 255, 0),
+						-round(30*sin(angle)));
+				cvLine(pre, iter->pt, iter->pt + r, CV_RGB(0, 0, 255),
 						1, 8);
 			}
 		}

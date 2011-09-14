@@ -138,36 +138,42 @@ bool CheckValid(const CvArr *src, vector<Vertex> &v, Point pt, float th1, float 
 	char *data;
  	int step;
 	char direction[8] = {0, };
+	int direc1, direc2;
 
 	data = img_src->imageData;
 	step = img_src->widthStep;
 
-	if(!(pt.x >= 0 && pt.y >= 0) || !(pt.x < size.width && pt.y < size.height))
+	if((pt.x < 0 || pt.y < 0) || (pt.x >= size.width || pt.y >= size.height))
 		return false;
 
 	// 
 	float tan1 = CV_PI / 2.0 - th1;
 	float tan2 = CV_PI / 2.0 - th2;
 
-	if(tan1 < 0) tan1 = CV_PI - tan1;
-	if(tan2 < 0) tan2 = CV_PI - tan1;
+	if(tan1 < 0) tan1 = 2.0 * CV_PI + tan1;
+	if(tan2 < 0) tan2 = 2.0 * CV_PI + tan1;
 
 	float angle;
-	float radius = 30.0;
+	float radius = 20.0;
 	bool flag = false;
 	for(int i = 0 ; i < 8 ; i++) {
 		flag = false;
-		angle = i * CV_PI / 4.0;
+		angle = (float)i * CV_PI / 4.0;
 		for(float dangle = 0.0 ; dangle < CV_PI / 8 ; dangle += 0.01) {
 			int x = round(pt.x + radius * cos(angle+dangle));
 			int y = round(pt.y - radius * sin(angle+dangle));
-			
+			if((x < 0 || y < 0) || (x >= size.width || y >= size.height))
+				continue;
+
 			if(data[x + y * step] != 0) {
 				flag = true;
 				break;
 			}
+
 			x = round(pt.x + radius * cos(angle-dangle));
 			y = round(pt.y - radius * sin(angle-dangle));
+			if((x < 0 || y < 0) || (x >= size.width || y >= size.height))
+				continue;
 			if(data[x + y * step] != 0) {
 				flag = true;
 				break;
@@ -177,8 +183,8 @@ bool CheckValid(const CvArr *src, vector<Vertex> &v, Point pt, float th1, float 
 		if(flag) {
 			if(vertex == NULL) {
 				vertex = new Vertex();
+				vertex->pt = pt;
 			}
-			vertex->pt = pt;
 			vertex->direction[i] = 1;
 		}
 	}
@@ -186,13 +192,22 @@ bool CheckValid(const CvArr *src, vector<Vertex> &v, Point pt, float th1, float 
 	if(vertex == NULL)
 		return false;
 
-	for(int i = 0 ; i < 8 ; i++) {
-		if(vertex->direction[i] == 1) {
-		}
+	flag = true;
+	direc1 = round(tan1 / (CV_PI / 4.0));
+	direc2 = round(tan2 / (CV_PI / 4.0));
+
+	if((vertex->direction[direc1] != 1 &&
+				vertex->direction[(direc1 + 4) % 8] != 1) ||
+			(vertex->direction[direc2] != 1 &&
+			vertex->direction[(direc2 + 4) % 8] != 1))
+		return false;
+
+	if(flag) {
+		v.push_back(*vertex);
+		return true;
 	}
 
-	v.push_back(*vertex);
-	return true;
+	return false;
 }
 
 void CalcVertexPos(vector<Point> &p, vector<Vertex> &v)
